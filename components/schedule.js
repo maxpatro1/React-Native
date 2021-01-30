@@ -1,7 +1,9 @@
 import {Component} from "react";
 import React from "react";
-import { StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
 import {Icon} from "react-native-elements";
+import {ActivityIndicator} from "react-native-paper";
+
 import AsyncStorage from '@react-native-community/async-storage'
 
 export default class Schedule extends Component<Props> {
@@ -47,16 +49,14 @@ export default class Schedule extends Component<Props> {
     render() {
         if(this.state.isLoading){
             return(
-                <View style={{flex: 1, padding: 20}}>
-                    <Text>Загрузка</Text>
+                <View style={{flex: 1, padding: 20, justifyContent:"center",alignItems:"center"}}>
+                    <ActivityIndicator animating={true} size={'large'}/>
                 </View>
             )}
         if(this.state.dataSource[this.state.group]===undefined){
             return (
-                <View style={{flex: 1, padding: 20}}>
-                    <Text>
-                        Ничего не найдено
-                    </Text>
+                <View style={{flex: 1, padding: 20, }}>
+                    <Image style={{width:"90%",height:200}} source={require('./assets/not_found.png')}/>
                 </View>
             )
         }

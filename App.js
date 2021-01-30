@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import Swiper from "react-native-swiper";
 import Schedule from "./components/schedule";
 import Header from"./components/Header";
@@ -44,8 +44,7 @@ export default class App extends Component {
             return (
                 <View style={styles.container}>
                     <View style={styles.logoContainer}>
-                        {/*<Image style={styles.logo} source={'/home/maxim/WebstormProjects/React-Native1/assets/icon.png'}/>*/}
-                        <Text>Расписание для Лэти</Text>
+                        <Image style={styles.logo} source={require('./components/assets/logo.png')}/>
                     </View>
                     <View style={styles.form}>
                         <TextInput
@@ -128,8 +127,9 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     logo:{
-        width:100,
-        height:100,
+        top: 50,
+        width:"90%",
+        height:"50%",
     },
     form: {
         margin: 20,
