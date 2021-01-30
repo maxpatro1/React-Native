@@ -1,50 +1,105 @@
-import { StatusBar } from 'expo-status-bar';
-import { Icon } from 'react-native-elements'
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Data from "../assets/Data";
+import {Component} from "react";
+import React from "react";
+import { StyleSheet, Text, View} from "react-native";
+import {Icon} from "react-native-elements";
+import AsyncStorage from '@react-native-community/async-storage'
+
+export default class Schedule extends Component<Props> {
+    constructor(props){
+        super(props);
+        this.state ={
+            isLoading: true,
+            group: this.props.group
+        }
+
+    };
+    componentDidMount(){
+        this.load()
+        return fetch('https://api.npoint.io/eff30a27daf6e1cf98c9')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    isLoading: false,
+                    dataSource: responseJson,
+                }, function(){
+                });
+            })
+            .catch((error) =>{
+                console.error(error);
+            });
 
 
-export default function Schedule(props) {
-    let day = props.items;
-    let DataNw = Data[day];
-    const jokeComponents = DataNw.map(item =>
-        <View key={item.id} style={styles.container}>
-            {item.type === 'лекция' ?  <View style={styles.bgGreen}><Text>  </Text></View> : null }
-            {item.type === 'практика' ? <View style={styles.bgBlue}><Text>  </Text></View> : null }
-            {item.type === 'лабораторная работа' ? <View style={styles.bgRed}><Text>  </Text></View> : null }
-            <View style={styles.bg}>
-                <Text>  </Text>
-            </View>
-            <View style={styles.info}>
-                <View style={styles.subject}>
-                    <Text style={styles.title}>{item.subject}</Text>
+    }
+    load = async ()=> {
+        try {
+            const value = await AsyncStorage.getItem('Group');
+            if (value !== null) {
+                this.setState({
+                    group: value
+                })
+            }
+        } catch (error) {
+            alert(error)
+        }
+
+    }
+
+    render() {
+        if(this.state.isLoading){
+            return(
+                <View style={{flex: 1, padding: 20}}>
+                    <Text>Загрузка</Text>
                 </View>
-                {item.type === 'лекция' ? <View style={styles.typeLec}><Text style={{color:'#fff'}}>{item.type}</Text></View> : null }
-                {item.type === 'практика' ? <View style={styles.typePr}><Text style={{color:'#fff'}}>{item.type}</Text></View> : null }
-                {item.type === 'лабораторная работа' ? <View style={styles.typeLab}><Text style={{color:'#fff'}}>{item.type}</Text></View> : null }
-                <View>
-                    <View style={{flexDirection: 'row'}}>
-                        <Icon name='account-circle' color='grey'/>
-                        <Text style={styles.teacher}>{item.teacher}</Text>
+            )}
+        if(this.state.dataSource[this.state.group]===undefined){
+            return (
+                <View style={{flex: 1, padding: 20}}>
+                    <Text>
+                        Ничего не найдено
+                    </Text>
+                </View>
+            )
+        }
+        else {
+            const jokeComponents = this.state.dataSource[this.state.group][this.props.items].map(item =>
+                <View key={item.id} style={styles.container}>
+                    {item.type === 'лекция' ?  <View style={styles.bgGreen}><Text>  </Text></View> : null }
+                    {item.type === 'практика' ? <View style={styles.bgBlue}><Text>  </Text></View> : null }
+                    {item.type === 'лабораторная работа' ? <View style={styles.bgRed}><Text>  </Text></View> : null }
+                    <View style={styles.bg}>
+                        <Text>  </Text>
                     </View>
-                    <View style={{flexDirection: 'row'}}>
-                        <Icon name='place' color='grey'/>
-                        <Text style={styles.teacher}>{item.Aud}</Text>
+                    <View style={styles.info}>
+                        <View style={styles.subject}>
+                            <Text style={styles.title}>{item.subject}</Text>
+                        </View>
+                        {item.type === 'лекция' ? <View style={styles.typeLec}><Text style={{color:'#fff'}}>{item.type}</Text></View> : null }
+                        {item.type === 'практика' ? <View style={styles.typePr}><Text style={{color:'#fff'}}>{item.type}</Text></View> : null }
+                        {item.type === 'лабораторная работа' ? <View style={styles.typeLab}><Text style={{color:'#fff'}}>{item.type}</Text></View> : null }
+                        <View>
+                            <View style={{flexDirection: 'row'}}>
+                                <Icon name='account-circle' color='grey'/>
+                                <Text style={styles.teacher}>{item.teacher}</Text>
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                                <Icon name='place' color='grey'/>
+                                <Text style={styles.teacher}>{item.Aud}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.time}>
+                        <Text style={styles.timeStart}>{item.timeStart}</Text>
+                        <Text>{item.timeStop}</Text>
                     </View>
                 </View>
-            </View>
-            <View style={styles.time}>
-                <Text style={styles.timeStart}>{item.timeStart}</Text>
-                <Text>{item.timeStop}</Text>
-            </View>
-        </View>
 
-    )
-    return (
+            )
+            return(
+                    jokeComponents
+            );
+        }
 
-        jokeComponents
-    );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -68,15 +123,17 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        maxHeight:'20%',
+        minHeight:"13%",
+        maxHeight:"20%",
+        height:'20%',
         flexDirection: 'row',
         width: '95%',
-        height: 500,
         alignSelf: 'center',
         backgroundColor: '#fff',
         elevation: 20,
         marginRight: '5%',
         marginTop: 20,
+        marginBottom:5,
 
     },
     subject:{
@@ -97,7 +154,7 @@ const styles = StyleSheet.create({
     },
     typeLec:{
         width: 70,
-        height: 25,
+        height: 24,
         borderRadius: 10,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -129,8 +186,11 @@ const styles = StyleSheet.create({
     info:{
         width:'80%',
         flexDirection: 'column',
-        justifyContent:'center',
+        justifyContent:'space-around',
         paddingLeft:10,
+    },
+    scroll:{
+        height:"1000%"
     }
 
 });
