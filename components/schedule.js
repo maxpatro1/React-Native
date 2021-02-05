@@ -66,6 +66,7 @@ export default class Schedule extends Component<Props> {
                     {item.type === 'лекция' ?  <View style={styles.bgGreen}><Text>  </Text></View> : null }
                     {item.type === 'практика' ? <View style={styles.bgBlue}><Text>  </Text></View> : null }
                     {item.type === 'лабораторная работа' ? <View style={styles.bgRed}><Text>  </Text></View> : null }
+                    {(item.type !== 'лабораторная работа' && item.type !== 'практика'&&item.type !== 'лекция') ? <View style={styles.bgFiol}><Text>  </Text></View> : null }
                     <View style={styles.bg}>
                         <Text>  </Text>
                     </View>
@@ -103,14 +104,17 @@ export default class Schedule extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+    bgFiol:{
+        width:'5%',
+        height:'100%',
+        backgroundColor:'#8E44AD'
+    },
     bgBlue: {
-        color:'blue',
         width:'5%',
         height:'100%',
         backgroundColor:'#3a87fb'
     },
     bgGreen: {
-        color:'blue',
         width:'5%',
         height:'100%',
         backgroundColor:'#32965a'
