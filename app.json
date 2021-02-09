@@ -21,6 +21,7 @@
       "bundleIdentifier": "com.patrol.max"
     },
     "android": {
+      "permissions": [],
       "adaptiveIcon": {
         "foregroundImage": "./components/assets/icon.png",
         "backgroundColor": "#FFFFFF"
