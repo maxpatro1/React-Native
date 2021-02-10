@@ -2,7 +2,7 @@
   "expo": {
     "name": "Расписание LETI",
     "slug": "myapp",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./components/assets/icon.png",
     "splash": {
@@ -26,7 +26,8 @@
         "foregroundImage": "./components/assets/icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.max_patrol.myapp"
+      "package": "com.max_patrol.myapp",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./components/assets/icon.png"

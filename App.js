@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import Swiper from "react-native-swiper";
